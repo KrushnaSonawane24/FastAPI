@@ -1,7 +1,53 @@
-from pydantic import BaseModel, Field, AnyUrl,StrictFloat
-from typing_extensions import Annotated, Literal , Optional
+from pydantic import (BaseModel, Field, AnyUrl,StrictFloat,EmailStr,
+field_validator,# ye sirf ek hi field pe kaaam karta ahi 
+model_validator ,computed_field) #if you want to give multiple field do use model_validator
+from typing import Optional, List
+from typing_extensions import Literal,Annotated
 from uuid import UUID
 from datetime import datetime
+
+
+class DimentionCm(BaseModel):
+    lenght:Annotated[StrictFloat,
+     Field(gt=0, 
+     le=50, 
+     description="length of a product")]
+
+    width: Annotated[StrictFloat, 
+    Field(gt=0, 
+    le=50, 
+    description="widht of a product")] 
+
+    height:Annotated[StrictFloat,
+    Field(gt=0,
+    le=10, 
+    description="height of a product")] 
+
+    
+#-----------------------------------------------------------
+class Seller(BaseModel):
+    id: UUID
+    name: Annotated[str,
+        Field( min_length=6,
+        max_length= 80 ,
+        title="seller Name",
+        description="Name of a seller (6-80) char ",
+        examples=["mi store", "Realme store"])]
+
+    email:EmailStr
+
+    website: AnyUrl
+
+    @field_validator("email",mode="after")
+    @classmethod
+    def validate_seller_email_format(cls,value=EmailStr):
+        allowed_domain=[ "lenovostore.in","samsungindia.in","mistore.in","asusexclusive.in", "hpworld.in","oneplusstore.in"]
+        domain=str(value).split("@")[-1].lower()
+
+        if domain not in allowed_domain :
+            raise ValueError (f"seller email domain not allowed :{domain}")
+        return value
+
 
 class Product(BaseModel):
     id: UUID
@@ -9,7 +55,7 @@ class Product(BaseModel):
         min_length=6,
         max_length=36,
         title="SKU",
-        examples=["3745-3532-25235-23552"])]
+        examples=["REAL-135GB-001"])]
 
     name: Annotated[str,
         Field( min_length=6,
@@ -45,7 +91,7 @@ class Product(BaseModel):
         description= "Descount in percentage(0-90)")]
     
     stock: Annotated[int,Field
-        (ge=1,
+        (ge=0,
         title="how many items are left")]
 
 
@@ -53,22 +99,72 @@ class Product(BaseModel):
         description ="is porduct active ?")]
 
     rating:Annotated[StrictFloat , Field(
-        gt= 0 , 
+        ge= 0 , 
         le=5,
         strict=True,
         description=" Product Rating out of 5 ")]
 
-    tags: Annotated [Optional [list[str]], Field (
+    tags: Annotated [Optional [List[str]], Field (
         default= None, 
         max_items= 10,
         description = "up to 10 tags"
     )
     ]
-    image_urls : Annotated [list[AnyUrl], Field ( description="img url's ",min_items=1  ) ]
+    image_urls : Annotated [List[AnyUrl], Field ( description="img url's ",min_items=1  ) ]
+    
+    dimensions_cm :DimentionCm
+
+    seller:Seller
+    
 
     created_at: datetime
 
+#this field validetor must in class not out of class 
+    @field_validator("sku",mode="after")
+    @classmethod
+    def validate_sku_format(cls,value=str):
+        if "-" not in value:
+            raise ValueError("sku must have '-'")
 
+        last=value.split("-") [-1]
+        if not (len(last) ==3 and last.isdigit()):
+            raise ValueError("sku must end with a 3-digit like -234")
+
+        return value
     
-    
+    @model_validator(mode="after")
+    @classmethod
+    def validate_business_rule(cls, model:"product"):
+        if model.stock == 0 and model.is_active == True : 
+            raise ValueError ("if stock is 0 ,is_active must be false")
+        
+
+        if model.discount_percentage > 0 and model.rating == 0 : 
+            raise ValueError ("discounted Price must have the rating(rating !=0)")
+
+        return model
+
+    @computed_field 
+    @property
+    def final_price(self) -> float:
+        return round(self.price*(1-self.discount_percentage/100),2)    
+
+    @computed_field
+    @property
+    def Volume_cm3(self) -> float:
+        d=self.dimensions_cm
+        return round(d.lenght * d.width * d.height,2)
+
+
+
+
+
+
+
+
+
+
+
+
+
     

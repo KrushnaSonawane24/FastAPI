@@ -75,8 +75,34 @@ def get_product(
     "count": len(limited_items),
     "items": limited_items
 }
-#------------------------------------------------------------------------
+#-------------------------------------post method --------------------------------
 
 @app.post("/products",status_code=201)
 def created_product(product:Product):
-    return product
+    return product.model_dump(mode="json")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
