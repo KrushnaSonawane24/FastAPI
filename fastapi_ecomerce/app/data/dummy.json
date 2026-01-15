@@ -1,72 +1,42 @@
 [
   {
-    "id": "0005a4ea-ce3f-4dd7-bee0-f4ccc70fea6a",
-    "sku": "XIAO-359GB-001",
-    "name": "Xiaomi Model Pro",
-    "description": "Official Xiaomi product with manufacturer warranty",
-    "category": "laptops",
-    "brand": "Xiaomi",
-    "price": 25058.0,
+    "id": "394d40e7-2a95-445d-8738-c6af6be5a97e",
+    "sku": "SAMS-225GB-003",
+    "name": "Samsung Model Max",
+    "description": "Official Samsung product with manufacturer warranty",
+    "category": "mobiles",
+    "brand": "Samsung",
+    "price": 92264.0,
     "currency": "INR",
-    "discount_percent": 0,
-    "stock": 45,
-    "is_active": true,
-    "rating": 4.8,
-    "tags": [
-      "charger",
-      "amoled",
-      "tablet"
-    ],
-    "image_urls": [
-      "https://cdn.example.com/xiaomi/front.png",
-      "https://cdn.example.com/xiaomi/back.png"
-    ],
-    "dimensions_cm": {
-      "length": 27.4,
-      "width": 20.8,
-      "height": 1.9
-    },
-    "seller": {
-      "seller_id": "73cbdd06-5668-4e52-b172-e765f8468398",
-      "name": "Mi Store",
-      "email": "support@mistore.in",
-      "website": "https://www.mistore.in"
-    },
-    "created_at": "2024-09-06T00:00:00Z"
-  },
-  {
-    "id": "6c7b7c69-f07f-4474-992e-58d3c48ac437",
-    "sku": "REAL-135GB-002",
-    "name": "Realme Model Air",
-    "description": "Official Realme product with manufacturer warranty",
-    "category": "electronics",
-    "brand": "Realme",
-    "price": 18249.0,
-    "currency": "INR",
-    "discount_percent": 10,
+    "discount_percent": 70,
     "stock": 47,
     "is_active": true,
-    "rating": 4.6,
+    "rating": 4.5,
     "tags": [
       "gaming",
       "5g",
-      "camera"
+      "tablet",
+      "india",
+      "japan",
+      "phone"
     ],
     "image_urls": [
-      "https://cdn.example.com/realme/front.png",
-      "https://cdn.example.com/realme/back.png"
+      "https://cdn.example.com/samsung/front.png",
+      "https://cdn.example.com/samsung/back.png"
     ],
     "dimensions_cm": {
-      "length": 24.0,
-      "width": 22.3,
-      "height": 2.8
+      "length": 16.4,
+      "width": 20.3,
+      "height": 1.9
     },
     "seller": {
-      "seller_id": "5ff1519e-b952-4315-9151-c94b938123c9",
-      "name": "Realme Official",
-      "email": "support@realmeofficial.in",
-      "website": "https://www.realmeofficial.in"
+      "seller_id": "6e3a2dfd-4c0d-4938-98b1-f91be25e6558",
+      "name": "Samsung India",
+      "email": "support@samsungindia.in",
+      "website": "https://www.samsungindia.in/"
     },
-    "created_at": "2025-05-12T00:00:00Z"
+    "created_at": "2025-09-12T00:00:00Z",
+    "final_price": 27679.2,
+    "Volume_cm3": 632.55
   }
 ]
