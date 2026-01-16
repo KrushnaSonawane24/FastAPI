@@ -4,6 +4,7 @@ from pydantic import (BaseModel, Field, AnyUrl,StrictFloat,EmailStr,
 field_validator,# ye sirf ek hi field pe kaaam karta ahi 
 model_validator ,computed_field) #if you want to give multiple field do use model_validator
 from typing import Optional, List
+ 
 from typing_extensions import Literal,Annotated
 from uuid import UUID
 from datetime import datetime
@@ -149,7 +150,7 @@ class Product(BaseModel):
     @computed_field 
     @property
     def final_price(self) -> float:
-        return round(self.price*(1-self.discount_percentage/100),2)    
+        return round(self.price*(1-self.discount_percent/100),2)    
 
     @computed_field
     @property
@@ -159,7 +160,7 @@ class Product(BaseModel):
 
 
 #--------------------------UPDATE-----------------------------------------------------------------------
-
+#allways use optional for update -------
 class DimensionCmUpdate(BaseModel):
     length:Optional[StrictFloat]=Field(gt=0)
     width:Optional[StrictFloat]=Field(gt=0)

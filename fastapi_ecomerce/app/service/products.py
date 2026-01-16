@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import List, Dict
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-data_file = BASE_DIR / "data" / "dummy.json"
+data_file = BASE_DIR / "data" / "products.json"
 
 def load_products() -> List[Dict]:
     if not data_file.exists():

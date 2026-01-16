@@ -1,18 +1,37 @@
-from fastapi import FastAPI, HTTPException, Query,Path
+from dotenv import load_dotenv
+import os
+from fastapi import FastAPI, HTTPException, Query,Path,Request,Depends
 from .service.products import get_all_products,add_product ,remove_product ,change_product
 from typing import Optional,Literal
+from fastapi.responses import JSONResponse
 from .schema.product import Product,productUpdate
 from uuid import uuid4,UUID
 from datetime import datetime
 
 
 
-
+load_dotenv("app/.env")
 app = FastAPI()
 
-@app.get("/")
-def root():
-    return {"message": "hello world"}
+@app.middleware("http")
+async def lifecycle(request:Request,call_next):
+    print("before request")
+    responce = await call_next(request)
+    #responce["lifecycle"]="was inside"
+    print("after request")
+    return responce#["lifecycle"]
+
+def common_logic():
+    return "hello there "
+
+@app.get("/",response_model=dict)
+def root(dep=Depends(common_logic)):
+    DB_path=os.getenv('base_url')
+    #return {"message": "welcome to fastapi","dependancy":dep,"data_path":DB_path}
+    return JSONResponse (status_code=202,content={"message": "welcome to fastapi","dependancy":dep,"data_path":DB_path})
+
+
+
 #thsi for ony the get 
 
 
@@ -81,8 +100,15 @@ def get_product(
 }
 
 @app.get("/products/{product_id}", response_model=dict)
-def get_product_by_id():
-    pass
+def get_product_by_id(product_id:str=Path(...,min_length=36,max_length=36,description="UUID of the product")):
+            products= get_all_products()
+
+            for product in products:
+                if product['id']==product_id:
+                    return product
+            raise HTTPException(status_code=404,detail="product no fount!")
+                    
+    
 #-------------------------------------post method --------------------------------
 
 @app.post("/products",status_code=201)
