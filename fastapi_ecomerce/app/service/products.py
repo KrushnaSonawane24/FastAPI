@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 data_file = BASE_DIR / "data" / "products.json"
 
 def load_products() -> List[Dict]:
-    if not data_file.exists():
+    if not data_file.exists(): 
         return []
 
     try:
